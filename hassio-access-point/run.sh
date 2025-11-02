@@ -48,6 +48,7 @@ ALLOW_MAC_ADDRESSES=$(bashio::config 'allow_mac_addresses' )
 DENY_MAC_ADDRESSES=$(bashio::config 'deny_mac_addresses' )
 DEBUG=$(bashio::config 'debug' )
 HT_CAPAB=$(bashio::config "ht_capab" )
+HT_CAPAB=${HT_CAPAB:-"[HT40][SHORT-GI-20][DSSS_CCK-40]"}
 HOSTAPD_CONFIG_OVERRIDE=$(bashio::config 'hostapd_config_override' )
 CLIENT_INTERNET_ACCESS=$(bashio::config.false 'client_internet_access'; echo $?)
 CLIENT_DNS_OVERRIDE=$(bashio::config 'client_dns_override' )
@@ -84,7 +85,7 @@ ip link set $INTERFACE up
 trap 'term_handler' SIGTERM
 
 # Enforces required env variables
-required_vars=(ssid wpa_passphrase channel address netmask broadcast ht_capab)
+required_vars=(ssid wpa_passphrase channel address netmask broadcast)
 for required_var in "${required_vars[@]}"; do
     bashio::config.require $required_var "An AP cannot be created without this information"
 done
